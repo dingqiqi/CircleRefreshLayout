@@ -374,7 +374,8 @@ public class AnimationView extends View {
     private int mLastHeight;
 
     private int getRelHeight() {
-        return (int) (mSpriDeta * (1 - getRelRatio()));
+        //Modify When the drop-down to refresh a certain distance when the slide to let go, the control on the card does not move
+        return (mSpriDeta * (1 - getRelRatio())) > 0 ? (int) (mSpriDeta * (1 - getRelRatio())) : 0;
     }
 
     private int getSpringDelta() {
@@ -382,7 +383,7 @@ public class AnimationView extends View {
     }
 
 
-    private static long REL_DRAG_DUR = 200;
+    private static long REL_DRAG_DUR = 100;
 
     private long mStart;
     private long mStop;
@@ -427,7 +428,7 @@ public class AnimationView extends View {
         return Math.min(1, ratio);
     }
 
-    private static final long POP_BALL_DUR = 300;
+    private static final long POP_BALL_DUR = 200;
     private long mPopStart;
     private long mPopStop;
 
@@ -448,7 +449,7 @@ public class AnimationView extends View {
         return Math.min(ratio, 1);
     }
 
-    private static final long OUTER_DUR = 200;
+    private static final long OUTER_DUR = 100;
     private long mOutStart;
     private long mOutStop;
 
@@ -474,7 +475,7 @@ public class AnimationView extends View {
         return Math.min(ratio, 1);
     }
 
-    private static final long DONE_DUR = 1000;
+    private static final long DONE_DUR = 300;
     private long mDoneStart;
     private long mDoneStop;
 

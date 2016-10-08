@@ -21,7 +21,7 @@ public class CircleRefreshLayout extends FrameLayout {
 
     private static String TAG = "pullToRefresh";
 
-    private static final long BACK_TOP_DUR = 600;
+    private static final long BACK_TOP_DUR = 400;
     private static final long REL_DRAG_DUR = 200;
 
     private int mHeaderBackColor = 0xff8b90af;
@@ -135,7 +135,10 @@ public class CircleRefreshLayout extends FrameLayout {
             @Override
             public void viewAniDone() {
 //                Log.i(TAG, "should invoke");
-                mUpTopAnimator.start();
+                //Resolving a fragment in a refresh can not be stopped
+                if(!mUpTopAnimator.isStarted()) {
+                    mUpTopAnimator.start();
+                }
             }
         });
 
