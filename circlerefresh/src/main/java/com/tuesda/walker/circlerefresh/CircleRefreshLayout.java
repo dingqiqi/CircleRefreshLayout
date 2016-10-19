@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -127,6 +128,9 @@ public class CircleRefreshLayout extends FrameLayout {
                 }
                 mHeader.getLayoutParams().height = (int) val;
                 mHeader.requestLayout();
+                if (mHeader.getLayoutParams().height == 0) {
+                    mIsRefreshing = false;
+                }
             }
         });
         mUpTopAnimator.setDuration(BACK_TOP_DUR);
@@ -136,7 +140,7 @@ public class CircleRefreshLayout extends FrameLayout {
             public void viewAniDone() {
 //                Log.i(TAG, "should invoke");
                 //Resolving a fragment in a refresh can not be stopped
-                if(!mUpTopAnimator.isStarted()) {
+                if (!mUpTopAnimator.isStarted()) {
                     mUpTopAnimator.start();
                 }
             }
@@ -165,14 +169,13 @@ public class CircleRefreshLayout extends FrameLayout {
             return false;
         }
 
-
         return ViewCompat.canScrollVertically(mChildView, -1);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (mIsRefreshing) {
-            return true;
+            return false;
         }
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -192,7 +195,8 @@ public class CircleRefreshLayout extends FrameLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mIsRefreshing) {
-            return super.onTouchEvent(event);
+            // return super.onTouchEvent(event);
+            return false;
         }
 
         switch (event.getAction()) {
@@ -221,7 +225,7 @@ public class CircleRefreshLayout extends FrameLayout {
                         mUpBackAnimator.start();
                         mHeader.releaseDrag();
                         mIsRefreshing = true;
-                        if (onCircleRefreshListener!=null) {
+                        if (onCircleRefreshListener != null) {
                             onCircleRefreshListener.refreshing();
                         }
 
@@ -254,7 +258,7 @@ public class CircleRefreshLayout extends FrameLayout {
         if (onCircleRefreshListener != null) {
             onCircleRefreshListener.completeRefresh();
         }
-        mIsRefreshing = false;
+//        mIsRefreshing = false;
         mHeader.setRefreshing(false);
     }
 
